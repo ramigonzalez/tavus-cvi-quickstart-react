@@ -5,10 +5,11 @@ import { VideoCallModule } from '@/VideoCallModule'
 import { ConversationService } from '@/services/conversationService'
 import { IConversation } from '@/types'
 import { useToast } from "@/hooks/use-toast"
+import { OnboardingPage } from '@/pages/OnboardingPage'
 
 function App() {
   const { toast } = useToast()
-  const [screen, setScreen] = useState<'welcome' | 'call'>('welcome')
+  const [screen, setScreen] = useState<'welcome' | 'call' | 'onboarding'>('welcome')
   const [conversation, setConversation] = useState<IConversation | null>(null)
   const [loading, setLoading] = useState(false)
 
@@ -51,16 +52,23 @@ function App() {
 
   return (
     <main>
-      <DailyProvider>
-        {screen === 'welcome' && <WelcomePage onStart={handleStart} loading={loading} />}
-        {screen === 'call' && conversation && (
-          <VideoCallModule 
-            conversation={conversation} 
-            onEnd={handleEnd}
-            config={{ enableToolCalls: true, enableDeviceControls: true }}
-          />
-        )}
-      </DailyProvider>
+      {screen === 'onboarding' ? (
+        <OnboardingPage onBack={() => setScreen('welcome')} />
+      ) : (
+        <>
+          <button onClick={() => setScreen('onboarding')} style={{borderBottom: '1px solid'}}>ONBOARDING</button>
+          <DailyProvider>
+            {screen === 'welcome' && <WelcomePage onStart={handleStart} loading={loading} />}
+            {screen === 'call' && conversation && (
+              <VideoCallModule 
+                conversation={conversation} 
+                onEnd={handleEnd}
+                config={{ enableToolCalls: true, enableDeviceControls: true }}
+              />
+            )}
+          </DailyProvider>
+        </>
+      )}
     </main>
   )
 }
