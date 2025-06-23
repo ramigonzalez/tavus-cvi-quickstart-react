@@ -1,7 +1,7 @@
 import { useVideoTrack, DailyVideo } from '@daily-co/daily-react';
 import { cn } from '@/lib/utils';
 
-export const Video = ({ id, className }: { id: string, className?: string }) => {
+export const VideoPlayer = ({ id, className }: { id: string, className?: string }) => {
   const videoState = useVideoTrack(id);
 
   return (
@@ -15,4 +15,4 @@ export const Video = ({ id, className }: { id: string, className?: string }) => 
       })}
     />
   );
-}
+} 
