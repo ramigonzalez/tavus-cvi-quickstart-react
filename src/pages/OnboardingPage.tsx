@@ -18,8 +18,8 @@ async function getSignedUrl(): Promise<string> {
 
 export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
   const [currentStep, setCurrentStep] = useState<
-    "initial" | "training" | "voice" | "email" | "ready"
-  >("initial");
+    "welcome" | "emotional_discovery" | "ritual_design" | "voice_selection" | "complete"
+  >("welcome");
   const [userName, setUserName] = useState("");
   const [conversationId, setConversationId] = useState("");
 
@@ -64,6 +64,7 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
           set_primary_goals: ({ goals }: { goals: string[] }): string => setPrimaryGoals({ goals }),
           clarify_user_input: ({ question }: { question: string }): string => clarifyUserInput({ question }),
           complete_onboarding: async (): Promise<string> => {
+            setCurrentStep('complete')
             console.log("*** complete_onboarding ***")
             await conversation.endSession();
             return "ss";
@@ -71,8 +72,9 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
           set_ui_state: ({ step }: { step: string }): string => {
             // Allow agent to navigate the UI.
             setCurrentStep(
-              step as "welcome" | "emotional_discovery" | "ritual_design" | "voice_selection" | "complete"
+              step as "welcome" | "emotional_discovery" | "ritual_design" | "voice_selection"
             );
+            console.log(step)
             return `Navigated to ${step}`;
           },
         }
@@ -91,7 +93,7 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
   return (
     <main className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-md mx-auto">
-        <div className={currentStep === "initial" ? "block" : "hidden"}>
+        <div className={currentStep === "welcome" ? "block" : "hidden"}>
           <div className="space-y-8">
             <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent">
               Design your Conversational AI Agent
