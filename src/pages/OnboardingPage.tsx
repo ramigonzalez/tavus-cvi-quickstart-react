@@ -6,8 +6,12 @@ import { ChevronRight } from "lucide-react";
 import { useConversation } from "@11labs/react";
 
 async function getSignedUrl(): Promise<string> {
-  const res = await fetch('/api/getSignedUrl');
-  const data = await res.json();
+  const res = await fetch('https://surodgyimnsfrxqehsxb.supabase.co/functions/v1/eleven-labs-signed-url', {
+    headers: {
+      'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+      'Content-Type': 'application/json'
+    }
+  });  const data = await res.json();
   if (!res.ok) throw new Error(data.error || 'Failed to get signed URL');
   return data.signed_url;
 }
@@ -35,7 +39,7 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
     try {
       // Request microphone permission
       await navigator.mediaDevices.getUserMedia({ audio: true });
-      
+
       // Start the conversation with your agent
       const signedUrl = await getSignedUrl();
       const convId = await conversation.startSession({
@@ -43,15 +47,6 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
         dynamicVariables: {
           user_name: userName,
         },
-        // clientTools: {
-        //   set_ui_state: ({ step }: { step: string }): string => {
-        //     // Allow agent to navigate the UI.
-        //     setCurrentStep(
-        //       step as "initial" | "training" | "voice" | "email" | "ready"
-        //     );
-        //     return `Navigated to ${step}`;
-        //   },
-        // },
         clientTools: {
           set_personality_profile: ({ disc, enneagram, confidence }: {
             disc: 'D' | 'I' | 'S' | 'C',
@@ -72,6 +67,13 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
             console.log("*** complete_onboarding ***")
             await conversation.endSession();
             return "ss";
+          },
+          set_ui_state: ({ step }: { step: string }): string => {
+            // Allow agent to navigate the UI.
+            setCurrentStep(
+              step as "welcome" | "emotional_discovery" | "ritual_design" | "voice_selection" | "complete"
+            );
+            return `Navigated to ${step}`;
           },
         }
       });
