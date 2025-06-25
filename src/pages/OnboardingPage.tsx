@@ -39,9 +39,12 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
       // Request microphone permission
       await navigator.mediaDevices.getUserMedia({ audio: true });
 
-      // Start the conversation with your agent
+      // Request signed URL
       const signedUrl = await getSignedUrl();
+
+      // Start the conversation with your agent
       await conversation.startSession({
+        overrides: { agent: { language: "es" } },
         signedUrl,
         dynamicVariables: {
           user_name: userName,
