@@ -4,6 +4,7 @@ import { useState, useCallback, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
 import { useConversation } from "@11labs/react";
+import type { Language } from "@11labs/react";
 
 async function getSignedUrl(): Promise<string> {
   const res = await fetch('https://surodgyimnsfrxqehsxb.supabase.co/functions/v1/eleven-labs-signed-url', {
@@ -21,6 +22,7 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
     "welcome" | "emotional_discovery" | "ritual_design" | "voice_selection" | "complete"
   >("welcome");
   const [userName, setUserName] = useState("");
+  const [language, setLanguage] = useState<Language>("en");
 
   const conversation = useConversation({
     onConnect: () => console.log("Connected"),
@@ -44,7 +46,7 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
 
       // Start the conversation with your agent
       await conversation.startSession({
-        overrides: { agent: { language: "es" } },
+        overrides: { agent: { language } },
         signedUrl,
         dynamicVariables: {
           user_name: userName,
@@ -76,7 +78,7 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
             setCurrentStep(
               step as "welcome" | "emotional_discovery" | "ritual_design" | "voice_selection"
             );
-            console.log(step)
+            console.log("***** set_ui_state ****", step)
             return `Navigated to ${step}`;
           },
         }
@@ -85,7 +87,7 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
     } catch (error) {
       console.error("Failed to start conversation:", error);
     }
-  }, [conversation, userName]);
+  }, [conversation, userName, language]);
 
   const stopConversation = useCallback(async () => {
     await conversation.endSession();
@@ -105,19 +107,42 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
               Click start and enable microphone access.
             </p>
 
-            <div className="space-y-4">
-              <label htmlFor="name-input" className="text-sm text-gray-400">
-                Your Name
-              </label>
-              <input
-                id="name-input"
-                type="text"
-                placeholder="Enter your name"
-                className="bg-gray-800 border-gray-700 text-white"
-                value={userName}
-                onChange={e => setUserName(e.target.value)}
-                required
-              />
+            <div className="space-y-10">
+            <div className="space-y-4 mt-6">
+                <label htmlFor="name-input" className="block text-base font-semibold text-purple-400 mb-1">
+                  Your Name
+                </label>
+                <input
+                  id="name-input"
+                  type="text"
+                  placeholder="Enter your name"
+                  className="bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white text-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 placeholder-gray-400 shadow-sm"
+                  value={userName}
+                  onChange={e => setUserName(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="space-y-4">
+                <label htmlFor="language-select" className="block text-base font-semibold text-purple-400 mb-1">
+                  Preferred Language
+                </label>
+                <select
+                  id="language-select"
+                  className="bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white text-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 shadow-sm"
+                  value={language}
+                  onChange={e => setLanguage(e.target.value as Language)}
+                >
+                  <option value="en">English</option>
+                  <option value="es">Spanish</option>
+                  <option value="fr">French</option>
+                  <option value="de">German</option>
+                  <option value="it">Italian</option>
+                  <option value="pt">Portuguese</option>
+                  <option value="zh">Chinese</option>
+                  <option value="ja">Japanese</option>
+                  <option value="ko">Korean</option>
+                </select>
+              </div>
             </div>
 
             {conversation.status === "connected" ? (
