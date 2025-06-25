@@ -21,13 +21,12 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
     "welcome" | "emotional_discovery" | "ritual_design" | "voice_selection" | "complete"
   >("welcome");
   const [userName, setUserName] = useState("");
-  const [conversationId, setConversationId] = useState("");
 
   const conversation = useConversation({
     onConnect: () => console.log("Connected"),
     onDisconnect: () => console.log("Disconnected"),
-    onMessage: (message: string) => console.log("Message:", message),
-    onError: (error: Error) => console.error("Error:", error),
+    onMessage: (props: { message: string; source: string }) => console.log("Message:", props.message),
+    onError: (message: string) => console.error("Error:", message),
   });
 
   useEffect(() => {
@@ -42,7 +41,7 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
 
       // Start the conversation with your agent
       const signedUrl = await getSignedUrl();
-      const convId = await conversation.startSession({
+      await conversation.startSession({
         signedUrl,
         dynamicVariables: {
           user_name: userName,
@@ -79,8 +78,7 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
           },
         }
       });
-      setConversationId(convId);
-      console.log("Conversation ID:", convId);
+      console.log("Conversation started successfully");
     } catch (error) {
       console.error("Failed to start conversation:", error);
     }
@@ -93,6 +91,7 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
   return (
     <main className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-md mx-auto">
+        {/* Welcome Step */}
         <div className={currentStep === "welcome" ? "block" : "hidden"}>
           <div className="space-y-8">
             <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent">
@@ -121,7 +120,7 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
             {conversation.status === "connected" ? (
               <Button
                 type="button"
-                onClick={() => stopConversation}
+                onClick={() => stopConversation()}
                 className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-6"
               >
                 <span>End Conversation</span>
@@ -138,6 +137,84 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
                 <ChevronRight className="ml-2 h-4 w-4" />
               </Button>
             )}
+          </div>
+        </div>
+
+        {/* Emotional Discovery Step */}
+        <div className={currentStep === "emotional_discovery" ? "block" : "hidden"}>
+          <div className="space-y-8">
+            <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent">
+              Emotional Discovery
+            </h1>
+            <p className="text-lg text-gray-300">
+              Let's explore your emotional landscape and understand what drives you.
+            </p>
+            
+            {conversation.status === "connected" && (
+              <div className="text-center">
+                <div className="w-4 h-4 bg-green-500 rounded-full animate-pulse mx-auto mb-4"></div>
+                <p className="text-sm text-gray-400">Listening...</p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Ritual Design Step */}
+        <div className={currentStep === "ritual_design" ? "block" : "hidden"}>
+          <div className="space-y-8">
+            <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent">
+              Ritual Design
+            </h1>
+            <p className="text-lg text-gray-300">
+              Let's design your perfect daily ritual together.
+            </p>
+            
+            {conversation.status === "connected" && (
+              <div className="text-center">
+                <div className="w-4 h-4 bg-green-500 rounded-full animate-pulse mx-auto mb-4"></div>
+                <p className="text-sm text-gray-400">Listening...</p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Voice Selection Step */}
+        <div className={currentStep === "voice_selection" ? "block" : "hidden"}>
+          <div className="space-y-8">
+            <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent">
+              Voice Selection
+            </h1>
+            <p className="text-lg text-gray-300">
+              Choose the voice that resonates with you most.
+            </p>
+            
+            {conversation.status === "connected" && (
+              <div className="text-center">
+                <div className="w-4 h-4 bg-green-500 rounded-full animate-pulse mx-auto mb-4"></div>
+                <p className="text-sm text-gray-400">Listening...</p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Complete Step */}
+        <div className={currentStep === "complete" ? "block" : "hidden"}>
+          <div className="space-y-8">
+            <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent">
+              All Set!
+            </h1>
+            <p className="text-lg text-gray-300">
+              Your conversational AI agent is ready to support you on your journey.
+            </p>
+            
+            <Button
+              type="button"
+              onClick={onBack}
+              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-6"
+            >
+              <span>Continue</span>
+              <ChevronRight className="ml-2 h-4 w-4" />
+            </Button>
           </div>
         </div>
       </div>
