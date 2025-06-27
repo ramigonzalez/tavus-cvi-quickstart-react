@@ -6,6 +6,22 @@ import { ChevronRight } from "lucide-react";
 import { useConversation } from "@11labs/react";
 import type { Language } from "@11labs/react";
 
+// Hardcoded map of voice IDs by language and gender
+const VOICE_ID_MAP: Record<string, Record<string, string>> = {
+  en: {
+    male: "en-male-1",
+    female: "en-female-1",
+  },
+  es: {
+    male: "es-male-1",
+    female: "es-female-1",
+  },
+  pt: {
+    male: "pt-male-1",
+    female: "pt-female-1",
+  }
+};
+
 async function getSignedUrl(): Promise<string> {
   const res = await fetch('https://surodgyimnsfrxqehsxb.supabase.co/functions/v1/eleven-labs-signed-url', {
     headers: {
@@ -23,6 +39,7 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
   >("welcome");
   const [userName, setUserName] = useState("");
   const [language, setLanguage] = useState<Language>("en");
+  const [gender, setGender] = useState<"male" | "female">("male");
   const [knowledgeCategories, setKnowledgeCategories] = useState<string[]>([]);
   const [primaryGoals, setPrimaryGoals] = useState<string[]>([]);
   const [personalityProfile, setPersonalityProfile] = useState<{ disc: string; enneagram?: string; confidence: number } | null>(null);
@@ -57,9 +74,12 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
       // Request signed URL
       const signedUrl = await getSignedUrl();
 
+      // Select the correct voiceId from the map
+      const voiceId = VOICE_ID_MAP[language]?.[gender] || VOICE_ID_MAP["en"]["male"];
+
       // Start the conversation with your agent
       await conversation.startSession({
-        overrides: { agent: { language } },
+        overrides: { agent: { language }, tts: { voiceId } },
         signedUrl,
         dynamicVariables: {
           user_name: userName,
@@ -114,7 +134,7 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
     } catch (error) {
       console.error("Failed to start conversation:", error);
     }
-  }, [conversation, userName, language]);
+  }, [conversation, userName, language, gender]);
 
 
 
@@ -165,6 +185,21 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
                   <option value="es">Spanish</option>
                   <option value="pt">Portuguese</option>
                   <option value="fr">French</option>
+                </select>
+              </div>
+              {/* Gender selection UI */}
+              <div className="space-y-4">
+                <label htmlFor="gender-select" className="block text-base font-semibold text-purple-400 mb-1">
+                  Preferred Voice Gender
+                </label>
+                <select
+                  id="gender-select"
+                  className="bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white text-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 shadow-sm"
+                  value={gender}
+                  onChange={e => setGender(e.target.value as "male" | "female")}
+                >
+                  <option value="female">Female</option>
+                  <option value="male">Male</option>
                 </select>
               </div>
             </div>
