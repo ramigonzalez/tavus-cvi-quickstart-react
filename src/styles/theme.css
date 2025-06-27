@@ -86,4 +86,13 @@ body, .body { font-size: 1rem; font-weight: 400; }
 }
 .button-animated:active {
   transform: scale(1.04);
+}
+
+/* Fade-in animation for cards/steps */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+.animate-fade-in {
+  animation: fade-in 0.3s cubic-bezier(.4,1.2,.6,1);
 } 

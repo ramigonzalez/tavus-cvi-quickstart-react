@@ -60,8 +60,8 @@ const CompleteStep: React.FC<CompleteStepProps> = ({
 }) => (
   <div className="min-h-screen flex flex-col items-center justify-center px-4 onboarding-bg">
     <ProgressDots current={stepIndex} total={totalSteps} />
-    <Card className="w-full max-w-sm mx-auto mt-8">
-      <h1 className="heading-gradient text-3xl font-bold mb-4">All Set!</h1>
+    <Card className="w-full max-w-sm mx-auto mt-8 shadow-indigo rounded-24 animate-fade-in">
+      <h1 className="heading-gradient text-4xl font-bold mb-4">All Set!</h1>
       <p className="text-base text-[--color-neutral-0] mb-6">Your conversational AI agent is ready to support you on your journey.</p>
       <div className="bg-[--color-surface-900] rounded-16 shadow-indigo p-4 space-y-4 mb-6">
         <div>

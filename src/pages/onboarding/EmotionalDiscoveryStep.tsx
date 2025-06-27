@@ -21,8 +21,8 @@ export const EmotionalDiscoveryStep: React.FC<EmotionalDiscoveryStepProps> = ({
 }) => (
   <div className="min-h-screen flex flex-col items-center justify-center px-4 onboarding-bg">
     <ProgressDots current={stepIndex} total={totalSteps} />
-    <Card className="w-full max-w-sm mx-auto mt-8 flex flex-col items-center">
-      <h1 className="heading-gradient text-3xl font-bold mb-4">Emotional Discovery</h1>
+    <Card className="w-full max-w-sm mx-auto mt-8 flex flex-col items-center shadow-indigo rounded-24 animate-fade-in">
+      <h1 className="heading-gradient text-4xl font-bold mb-4">Emotional Discovery</h1>
       <p className="text-base text-[--color-neutral-0] mb-6 text-center">Let's explore your emotional landscape and understand what drives you.</p>
       <div className="my-6">
         <VoiceWaveform active={listening} />

@@ -29,8 +29,8 @@ export const WelcomeStep: React.FC<WelcomeStepProps> = ({
 }) => (
   <div className="min-h-screen flex flex-col items-center justify-center px-4 onboarding-bg">
     <ProgressDots current={stepIndex} total={totalSteps} />
-    <Card className="w-full max-w-sm mx-auto mt-8">
-      <h1 className="heading-gradient text-3xl font-bold mb-4">Design your Conversational AI Agent</h1>
+    <Card className="w-full max-w-sm mx-auto mt-8 shadow-indigo rounded-24 animate-fade-in">
+      <h1 className="heading-gradient text-4xl font-bold mb-4">Design your Conversational AI Agent</h1>
       <p className="text-base text-[--color-neutral-0] mb-6">Let's have a chat to design your helpful conversational AI agent! Click start and enable microphone access.</p>
       <Input
         label="Your Name"
