@@ -23,6 +23,16 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
   >("welcome");
   const [userName, setUserName] = useState("");
   const [language, setLanguage] = useState<Language>("en");
+  const [knowledgeCategories, setKnowledgeCategories] = useState<string[]>([]);
+  const [primaryGoals, setPrimaryGoals] = useState<string[]>([]);
+  const [personalityProfile, setPersonalityProfile] = useState<{ disc: string; enneagram?: string; confidence: number } | null>(null);
+  const [ritualPreferences, setRitualPreferences] = useState<{
+    timing: string;
+    duration: string;
+    style: string;
+    voice_id: string;
+    focus_area: string;
+  } | null>(null);
 
   const conversation = useConversation({
     onConnect: () => console.log("Connected"),
@@ -59,16 +69,32 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
             disc: 'D' | 'I' | 'S' | 'C',
             enneagram?: string,
             confidence: number
-          }): string => setPersonalityProfile({ disc, enneagram, confidence }),
+          }): string => {
+            console.log("*** setPersonalityProfile ***", JSON.stringify({ disc, enneagram, confidence }))
+            setPersonalityProfile({ disc, enneagram, confidence });
+            return "Personality Profile Set Done";
+          },
           set_ritual_preferences: ({ timing, duration, style, voice_id, focus_area }: {
             timing: 'morning_person' | 'evening_person',
             duration: 'quick_focused' | 'deeper_dive', 
             style: 'guided_structure' | 'open_conversation',
             voice_id: 'confident_coach' | 'warm_friend' | 'gentle_guide' | 'wise_mentor',
             focus_area: 'stress_management' | 'goal_achievement' | 'relationships' | 'self_worth' | 'emotional_regulation'
-          }): string => setRitualPreferences({ timing, duration, style, voice_id, focus_area }),
-          tag_knowledge_category: ({ categories }: { categories: string[] }): string => tagKnowledgeCategory({ categories }),
-          set_primary_goals: ({ goals }: { goals: string[] }): string => setPrimaryGoals({ goals }),
+          }): string => {
+            console.log("*** setRitualPreferences ***", JSON.stringify({ timing, duration, style, voice_id, focus_area }))
+            setRitualPreferences({ timing, duration, style, voice_id, focus_area });
+            return "Ritual Preferences Set Done";
+          },
+          tag_knowledge_category: ({ categories }: { categories: string[] }): string => {
+            console.log("*** tagKnowledgeCategory ***", JSON.stringify(categories))
+            setKnowledgeCategories(categories);
+            return "Knowledge Category Tag Done";
+          },
+          set_primary_goals: ({ goals }: { goals: string[] }): string => {
+            console.log("*** setPrimaryGoals ***", JSON.stringify(goals))
+            setPrimaryGoals(goals);
+            return "Primary Goals Set Done";
+          },
           complete_onboarding: async (): Promise<string> => {
             setCurrentStep('complete')
             console.log("*** complete_onboarding ***")
@@ -238,7 +264,55 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
             <p className="text-lg text-gray-300">
               Your conversational AI agent is ready to support you on your journey.
             </p>
-            
+
+            <div className="bg-gray-900 rounded-xl shadow-lg p-6 space-y-6">
+              {/* Knowledge Categories */}
+              <div>
+                <h2 className="text-xl font-semibold text-purple-300 mb-2">Knowledge Categories</h2>
+                <div className="flex flex-wrap gap-2">
+                  {knowledgeCategories.map((cat, i) => (
+                    <span key={i} className="bg-purple-700 text-white px-3 py-1 rounded-full text-sm">{cat}</span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Primary Goals */}
+              <div>
+                <h2 className="text-xl font-semibold text-purple-300 mb-2">Primary Goals</h2>
+                <ul className="list-disc list-inside text-gray-200">
+                  {primaryGoals.map((goal, i) => (
+                    <li key={i}>{goal}</li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Personality Profile */}
+              {personalityProfile && (
+                <div>
+                  <h2 className="text-xl font-semibold text-purple-300 mb-2">Personality Profile</h2>
+                  <div className="flex flex-col gap-1 text-gray-200">
+                    <span><b>DISC:</b> {personalityProfile.disc}</span>
+                    {personalityProfile.enneagram && <span><b>Enneagram:</b> {personalityProfile.enneagram}</span>}
+                    <span><b>Confidence:</b> {(personalityProfile.confidence * 100).toFixed(0)}%</span>
+                  </div>
+                </div>
+              )}
+
+              {/* Ritual Preferences */}
+              {ritualPreferences && (
+                <div>
+                  <h2 className="text-xl font-semibold text-purple-300 mb-2">Ritual Preferences</h2>
+                  <div className="grid grid-cols-2 gap-2 text-gray-200">
+                    <span><b>Timing:</b> {ritualPreferences.timing.replace('_', ' ')}</span>
+                    <span><b>Duration:</b> {ritualPreferences.duration.replace('_', ' ')}</span>
+                    <span><b>Style:</b> {ritualPreferences.style.replace('_', ' ')}</span>
+                    <span><b>Voice:</b> {ritualPreferences.voice_id.replace('_', ' ')}</span>
+                    <span><b>Focus Area:</b> {ritualPreferences.focus_area.replace('_', ' ')}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+
             <Button
               type="button"
               onClick={onBack}
@@ -252,27 +326,4 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
       </div>
     </main>
   );
-}
-
-function setPersonalityProfile(arg0: { disc: "D" | "I" | "S" | "C"; enneagram: string | undefined; confidence: number; }): string {
-  console.log("*** setPersonalityProfile ***", JSON.stringify(arg0))
-  return "Personality Profile Set Done";
-}
-
-
-function setRitualPreferences(arg0: { timing: "morning_person" | "evening_person"; duration: "quick_focused" | "deeper_dive"; style: "guided_structure" | "open_conversation"; voice_id: "confident_coach" | "warm_friend" | "gentle_guide" | "wise_mentor"; focus_area: "stress_management" | "goal_achievement" | "relationships" | "self_worth" | "emotional_regulation"; }): string {
-  console.log("*** setRitualPreferences ***", JSON.stringify(arg0))
-  return "Ritual Preferences Set Done";
-}
-
-
-function tagKnowledgeCategory(arg0: { categories: string[]; }): string {
-    console.log("*** tagKnowledgeCategory ***", JSON.stringify(arg0))
-  return "Knowledge Category Tag Done";
-}
-
-
-function setPrimaryGoals(arg0: { goals: string[]; }): string {
-    console.log("*** setPrimaryGoals ***", JSON.stringify(arg0))
-  return "Primary Goals Set Done";
 }
