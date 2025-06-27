@@ -1,10 +1,13 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { ChevronRight } from "lucide-react";
 import { useConversation } from "@11labs/react";
 import type { Language } from "@11labs/react";
+import { WelcomeStep } from "./onboarding/WelcomeStep";
+import { EmotionalDiscoveryStep } from "./onboarding/EmotionalDiscoveryStep";
+import { RitualDesignStep } from "./onboarding/RitualDesignStep";
+import { VoiceSelectionStep } from "./onboarding/VoiceSelectionStep";
+import CompleteStep from "./onboarding/CompleteStep";
 
 // Hardcoded map of voice IDs by language and gender
 const VOICE_ID_MAP: Record<string, Record<string, string>> = {
@@ -33,10 +36,18 @@ async function getSignedUrl(): Promise<string> {
   return data.signed_url;
 }
 
+const steps = [
+  "welcome",
+  "emotional_discovery",
+  "ritual_design",
+  "voice_selection",
+  "complete"
+] as const;
+
+type Step = typeof steps[number];
+
 export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
-  const [currentStep, setCurrentStep] = useState<
-    "welcome" | "emotional_discovery" | "ritual_design" | "voice_selection" | "complete"
-  >("welcome");
+  const [currentStep, setCurrentStep] = useState<Step>("welcome");
   const [userName, setUserName] = useState("");
   const [language, setLanguage] = useState<Language>("en");
   const [gender, setGender] = useState<"male" | "female">("male");
@@ -140,222 +151,68 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
     }
   }, [conversation, userName, language, gender]);
 
-
-
-  const stopConversation = useCallback(async () => {
-    await conversation.endSession();
-  }, [conversation]);
+  // Step navigation helpers
+  const stepIndex = steps.indexOf(currentStep);
+  const totalSteps = steps.length;
+  const goToNext = () => setCurrentStep(steps[Math.min(stepIndex + 1, totalSteps - 1)]);
+  const goToPrev = () => setCurrentStep(steps[Math.max(stepIndex - 1, 0)]);
 
   return (
-    <main className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-md mx-auto">
-        {/* Welcome Step */}
-        <div className={currentStep === "welcome" ? "block" : "hidden"}>
-          <div className="space-y-8">
-            <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent">
-              Design your Conversational AI Agent
-            </h1>
-            <p className="text-lg text-gray-300">
-              Let's have a chat to design your helpful conversational AI agent!
-              Click start and enable microphone access.
-            </p>
-
-            <div className="space-y-10">
-            <div className="space-y-4 mt-6">
-                <label htmlFor="name-input" className="block text-base font-semibold text-purple-400 mb-1">
-                  Your Name
-                </label>
-                <input
-                  id="name-input"
-                  type="text"
-                  placeholder="Enter your name"
-                  className="bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white text-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 placeholder-gray-400 shadow-sm"
-                  value={userName}
-                  onChange={e => setUserName(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="space-y-4">
-                <label htmlFor="language-select" className="block text-base font-semibold text-purple-400 mb-1">
-                  Preferred Language
-                </label>
-                <select
-                  id="language-select"
-                  className="bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white text-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 shadow-sm"
-                  value={language}
-                  onChange={e => setLanguage(e.target.value as Language)}
-                >
-                  <option value="en">English</option>
-                  <option value="es">Spanish</option>
-                  <option value="pt">Portuguese</option>
-                </select>
-              </div>
-              {/* Gender selection UI */}
-              <div className="space-y-4">
-                <label htmlFor="gender-select" className="block text-base font-semibold text-purple-400 mb-1">
-                  Preferred Voice Gender
-                </label>
-                <select
-                  id="gender-select"
-                  className="bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white text-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 shadow-sm"
-                  value={gender}
-                  onChange={e => setGender(e.target.value as "male" | "female")}
-                >
-                  <option value="female">Female</option>
-                  <option value="male">Male</option>
-                </select>
-              </div>
-            </div>
-
-            {conversation.status === "connected" ? (
-              <Button
-                type="button"
-                onClick={() => stopConversation()}
-                className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-6"
-              >
-                <span>End Conversation</span>
-                <ChevronRight className="ml-2 h-4 w-4" />
-              </Button>
-            ) : (
-              <Button
-                type="button"
-                onClick={startConversation}
-                className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-6"
-                disabled={!userName.trim()}
-              >
-                <span>Start</span>
-                <ChevronRight className="ml-2 h-4 w-4" />
-              </Button>
-            )}
-          </div>
-        </div>
-
-        {/* Emotional Discovery Step */}
-        <div className={currentStep === "emotional_discovery" ? "block" : "hidden"}>
-          <div className="space-y-8">
-            <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent">
-              Emotional Discovery
-            </h1>
-            <p className="text-lg text-gray-300">
-              Let's explore your emotional landscape and understand what drives you.
-            </p>
-            
-            {conversation.status === "connected" && (
-              <div className="text-center">
-                <div className="w-4 h-4 bg-green-500 rounded-full animate-pulse mx-auto mb-4"></div>
-                <p className="text-sm text-gray-400">Listening...</p>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Ritual Design Step */}
-        <div className={currentStep === "ritual_design" ? "block" : "hidden"}>
-          <div className="space-y-8">
-            <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent">
-              Ritual Design
-            </h1>
-            <p className="text-lg text-gray-300">
-              Let's design your perfect daily ritual together.
-            </p>
-            
-            {conversation.status === "connected" && (
-              <div className="text-center">
-                <div className="w-4 h-4 bg-green-500 rounded-full animate-pulse mx-auto mb-4"></div>
-                <p className="text-sm text-gray-400">Listening...</p>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Voice Selection Step */}
-        <div className={currentStep === "voice_selection" ? "block" : "hidden"}>
-          <div className="space-y-8">
-            <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent">
-              Voice Selection
-            </h1>
-            <p className="text-lg text-gray-300">
-              Choose the voice that resonates with you most.
-            </p>
-            
-            {conversation.status === "connected" && (
-              <div className="text-center">
-                <div className="w-4 h-4 bg-green-500 rounded-full animate-pulse mx-auto mb-4"></div>
-                <p className="text-sm text-gray-400">Listening...</p>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Complete Step */}
-        <div className={currentStep === "complete" ? "block" : "hidden"}>
-          <div className="space-y-8">
-            <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent">
-              All Set!
-            </h1>
-            <p className="text-lg text-gray-300">
-              Your conversational AI agent is ready to support you on your journey.
-            </p>
-
-            <div className="bg-gray-900 rounded-xl shadow-lg p-6 space-y-6">
-              {/* Knowledge Categories */}
-              <div>
-                <h2 className="text-xl font-semibold text-purple-300 mb-2">Knowledge Categories</h2>
-                <div className="flex flex-wrap gap-2">
-                  {knowledgeCategories.map((cat, i) => (
-                    <span key={i} className="bg-purple-700 text-white px-3 py-1 rounded-full text-sm">{cat}</span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Primary Goals */}
-              <div>
-                <h2 className="text-xl font-semibold text-purple-300 mb-2">Primary Goals</h2>
-                <ul className="list-disc list-inside text-gray-200">
-                  {primaryGoals.map((goal, i) => (
-                    <li key={i}>{goal}</li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Personality Profile */}
-              {personalityProfile && (
-                <div>
-                  <h2 className="text-xl font-semibold text-purple-300 mb-2">Personality Profile</h2>
-                  <div className="flex flex-col gap-1 text-gray-200">
-                    <span><b>DISC:</b> {personalityProfile.disc}</span>
-                    {personalityProfile.enneagram && <span><b>Enneagram:</b> {personalityProfile.enneagram}</span>}
-                    <span><b>Confidence:</b> {(personalityProfile.confidence * 100).toFixed(0)}%</span>
-                  </div>
-                </div>
-              )}
-
-              {/* Ritual Preferences */}
-              {ritualPreferences && (
-                <div>
-                  <h2 className="text-xl font-semibold text-purple-300 mb-2">Ritual Preferences</h2>
-                  <div className="grid grid-cols-2 gap-2 text-gray-200">
-                    <span><b>Timing:</b> {ritualPreferences.timing.replace('_', ' ')}</span>
-                    <span><b>Duration:</b> {ritualPreferences.duration.replace('_', ' ')}</span>
-                    <span><b>Style:</b> {ritualPreferences.style.replace('_', ' ')}</span>
-                    <span><b>Voice:</b> {ritualPreferences.voice_id.replace('_', ' ')}</span>
-                    <span><b>Focus Area:</b> {ritualPreferences.focus_area.replace('_', ' ')}</span>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <Button
-              type="button"
-              onClick={onBack}
-              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-6"
-            >
-              <span>Continue</span>
-              <ChevronRight className="ml-2 h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-      </div>
+    <main className="min-h-screen flex flex-col items-center justify-center p-4 onboarding-bg">
+      {currentStep === "welcome" && (
+        <WelcomeStep
+          userName={userName}
+          setUserName={setUserName}
+          language={language}
+          setLanguage={(v: string) => setLanguage(v as Language)}
+          gender={gender}
+          setGender={(v: string) => setGender(v as "male" | "female")}
+          onNext={() => {
+            startConversation();
+            goToNext();
+          }}
+          stepIndex={stepIndex}
+          totalSteps={totalSteps}
+        />
+      )}
+      {currentStep === "emotional_discovery" && (
+        <EmotionalDiscoveryStep
+          onNext={goToNext}
+          onBack={goToPrev}
+          stepIndex={stepIndex}
+          totalSteps={totalSteps}
+          listening={conversation.status === "connected"}
+        />
+      )}
+      {currentStep === "ritual_design" && (
+        <RitualDesignStep
+          onNext={goToNext}
+          onBack={goToPrev}
+          stepIndex={stepIndex}
+          totalSteps={totalSteps}
+          listening={conversation.status === "connected"}
+        />
+      )}
+      {currentStep === "voice_selection" && (
+        <VoiceSelectionStep
+          onNext={goToNext}
+          onBack={goToPrev}
+          stepIndex={stepIndex}
+          totalSteps={totalSteps}
+          listening={conversation.status === "connected"}
+        />
+      )}
+      {currentStep === "complete" && (
+        <CompleteStep
+          knowledgeCategories={knowledgeCategories}
+          primaryGoals={primaryGoals}
+          personalityProfile={personalityProfile}
+          ritualPreferences={ritualPreferences}
+          onContinue={onBack}
+          stepIndex={stepIndex}
+          totalSteps={totalSteps}
+        />
+      )}
     </main>
   );
 }
