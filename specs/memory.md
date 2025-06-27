@@ -2,13 +2,15 @@
 
 ## Previous Tasks
 - Project requirements and plan written
-- Phase 1: Core Foundations completed
-- Phase 2: Onboarding flow refactor completed
-- Phase 3: 80/20 Pareto mobile optimization & accessibility completed
-- Phase 4: Polish & QA completed
+- Phase 0: Preparation completed
+- Phase 1: Arami Visual & Structural Refactor completed (all onboarding steps now visually match the Arami Design System)
 
 ## Current Task
-- Phase 5: Documentation & handover
+- Phase 2: Voice-only step refactor (In Progress)
 
 ## Next Tasks
-- (Project complete after documentation & handover) 
+- Phase 3: Accessibility & mobile polish
+- Phase 4: Polish & QA
+- Phase 5: Documentation & handover
+
+_Note: All phases will be run until project completion._ 

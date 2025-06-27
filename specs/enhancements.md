@@ -9,10 +9,12 @@
 - In-app onboarding tutorial or tips
 - Analytics for onboarding drop-off and completion rates
 - Offline mode for onboarding (limited functionality)
+- Advanced voice UX: voice confirmation, error handling, fallback to manual navigation
 
 ## Out of Scope (for this PRD)
 - Full dashboard redesign
 - Integration with third-party authentication providers
 - Payment/subscription flows
 - Advanced analytics dashboard
-- Non-mobile (desktop/tablet) specific layouts 
+- Non-mobile (desktop/tablet) specific layouts
+- Manual navigation (Back/Next) on voice-only steps 
