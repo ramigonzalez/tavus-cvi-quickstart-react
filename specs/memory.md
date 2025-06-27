@@ -2,12 +2,12 @@
 
 ## Previous Tasks
 - Project requirements and plan written
+- Phase 1: Core Foundations completed
+- Phase 2: Onboarding flow refactor completed
+- Phase 3: 80/20 Pareto mobile optimization & accessibility completed
 
 ## Current Task
-- Phase 1: Core Foundations (theme, base components)
+- Phase 4: Polish & QA
 
 ## Next Tasks
-- Phase 2: Refactor onboarding flow with new components
-- Phase 3: Mobile optimization & accessibility
-- Phase 4: Polish & QA
 - Phase 5: Documentation & handover 
