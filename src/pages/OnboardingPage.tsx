@@ -27,7 +27,10 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
   const conversation = useConversation({
     onConnect: () => console.log("Connected"),
     onDisconnect: () => console.log("Disconnected"),
-    onMessage: (props: { message: string; source: string }) => console.log("Message:", props.message),
+    onMessage: (props: { message: string; source: string }) => { 
+      console.log("Message:", props.message) 
+      console.log("Source:", props.source) 
+    },
     onError: (message: string) => console.error("Error:", message),
   });
 
@@ -66,19 +69,18 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
           }): string => setRitualPreferences({ timing, duration, style, voice_id, focus_area }),
           tag_knowledge_category: ({ categories }: { categories: string[] }): string => tagKnowledgeCategory({ categories }),
           set_primary_goals: ({ goals }: { goals: string[] }): string => setPrimaryGoals({ goals }),
-          clarify_user_input: ({ question }: { question: string }): string => clarifyUserInput({ question }),
           complete_onboarding: async (): Promise<string> => {
             setCurrentStep('complete')
             console.log("*** complete_onboarding ***")
             await conversation.endSession();
-            return "ss";
+            return "Onboarding completed";
           },
-          set_ui_state: ({ step }: { step: string }): string => {
+          set_ui_step: ({ step }: { step: string }): string => {
             // Allow agent to navigate the UI.
             setCurrentStep(
               step as "welcome" | "emotional_discovery" | "ritual_design" | "voice_selection"
             );
-            console.log("***** set_ui_state ****", step)
+            console.log("***** set_ui_step ****", step)
             return `Navigated to ${step}`;
           },
         }
@@ -88,6 +90,8 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
       console.error("Failed to start conversation:", error);
     }
   }, [conversation, userName, language]);
+
+
 
   const stopConversation = useCallback(async () => {
     await conversation.endSession();
@@ -271,10 +275,4 @@ function tagKnowledgeCategory(arg0: { categories: string[]; }): string {
 function setPrimaryGoals(arg0: { goals: string[]; }): string {
     console.log("*** setPrimaryGoals ***", JSON.stringify(arg0))
   return "Primary Goals Set Done";
-}
-
-
-function clarifyUserInput(arg0: { question: string; }): string {
-    console.log("*** clarifyUserInput ***", JSON.stringify(arg0))
-  return "Personality Profile Done";
 }
