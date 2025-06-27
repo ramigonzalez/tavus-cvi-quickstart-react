@@ -1,3 +1,4 @@
+/* Global styles and theme tokens are imported from styles/theme.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
