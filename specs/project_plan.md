@@ -31,10 +31,10 @@
 - [ ] (Deprioritized) Advanced ARIA, exhaustive device testing, edge-case accessibility
 
 ## Phase 4: Polish & QA
-- [ ] Add end-of-session celebration (confetti/glow burst)
-- [ ] Review for visual/interaction match to Arami Design System
-- [ ] Code review and refactor for modularity/reusability
-- [ ] Final QA and bug fixes
+- [x] Add end-of-session celebration (confetti/glow burst)
+- [x] Review for visual/interaction match to Arami Design System
+- [x] Code review and refactor for modularity/reusability
+- [x] Final QA and bug fixes
 
 ## Phase 5: Documentation & Handover
 - [ ] Document component usage and design tokens

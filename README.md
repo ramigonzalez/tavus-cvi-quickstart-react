@@ -46,3 +46,52 @@ Check out our demo video to see the Conversational Video Interface in action:
 - [API Reference](https://docs.tavus.io/api-reference/)
 - [Tavus Platform](https://platform.tavus.io/)
 - [Daily React Reference](https://docs.daily.co/reference/daily-react)
+
+# Tavus Conversational Video Interface – Onboarding Refactor
+
+## Overview
+This project refactors the onboarding experience to follow the Arami Design System, with a focus on mobile-first (iPhone) usability, accessibility, and delightful user experience.
+
+## Key Features
+- **Mobile-first, card-based onboarding flow**
+- **Arami Design System**: gradients, palette, rounded cards, animated feedback
+- **Accessibility**: large touch targets, semantic HTML, inputMode/autoComplete, label association
+- **Celebration**: Confetti/glow burst animation at onboarding completion
+
+## New Component Library
+Reusable UI components in `src/components/ui/`:
+- `Button` (primary, secondary, ghost, animated)
+- `Input` (animated placeholder, error/success)
+- `Card` (rounded, shadow)
+- `Badge` (gradient, rounded)
+- `ProgressDots` (step indicator)
+- `VoiceWaveform` (animated listening state)
+- `Avatar` (animated pulse/glow)
+
+## Onboarding Step Components
+Located in `src/pages/onboarding/`:
+- `WelcomeStep`
+- `EmotionalDiscoveryStep`
+- `RitualDesignStep`
+- `VoiceSelectionStep`
+- `CompleteStep` (with celebration)
+
+## How to Use
+- The onboarding flow is managed in `OnboardingPage.tsx`.
+- Each step is a modular component, receives state and navigation props.
+- The flow is mobile-optimized and accessible by default.
+
+## Design Tokens & Theme
+- All colors, gradients, spacing, and radii are defined in `src/styles/theme.css`.
+- Typography and layout follow Arami Design System guidelines.
+
+## Accessibility
+- Inputs use `inputMode` and `autoComplete` where appropriate.
+- All interactive elements are keyboard accessible and have proper labels.
+
+## Polish & QA
+- End-of-session celebration animation for delight.
+- Visual and interaction match to Arami Design System.
+
+---
+For more details, see `specs/prd.md` and `specs/project_plan.md`.
