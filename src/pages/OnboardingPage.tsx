@@ -98,8 +98,7 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
           complete_onboarding: async (): Promise<string> => {
             setCurrentStep('complete')
             console.log("*** complete_onboarding ***")
-            await conversation.endSession();
-            return "Onboarding completed";
+            return 'Onboarding data saved successfully. Agent can now provide closing message before session ends.';
           },
           set_ui_step: ({ step }: { step: string }): string => {
             // Allow agent to navigate the UI.
@@ -164,13 +163,8 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
                 >
                   <option value="en">English</option>
                   <option value="es">Spanish</option>
-                  <option value="fr">French</option>
-                  <option value="de">German</option>
-                  <option value="it">Italian</option>
                   <option value="pt">Portuguese</option>
-                  <option value="zh">Chinese</option>
-                  <option value="ja">Japanese</option>
-                  <option value="ko">Korean</option>
+                  <option value="fr">French</option>
                 </select>
               </div>
             </div>
