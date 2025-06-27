@@ -9,16 +9,16 @@ import type { Language } from "@11labs/react";
 // Hardcoded map of voice IDs by language and gender
 const VOICE_ID_MAP: Record<string, Record<string, string>> = {
   en: {
-    male: "en-male-1",
-    female: "en-female-1",
+    male: "tQbs4WJdeIOdank6mubQ",
+    female: "eaNNqnkhfRYVtX7U7VLj",
   },
   es: {
-    male: "es-male-1",
-    female: "es-female-1",
+    male: "AvFwmpNEfWWu5mtNDqhH",
+    female: "9rvdnhrYoXoUt4igKpBw",
   },
   pt: {
-    male: "pt-male-1",
-    female: "pt-female-1",
+    male: "x6uRgOliu4lpcrqMH3s1",
+    female: "PZIBrGsMjLyYasEz50bI",
   }
 };
 
@@ -76,6 +76,10 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
 
       // Select the correct voiceId from the map
       const voiceId = VOICE_ID_MAP[language]?.[gender] || VOICE_ID_MAP["en"]["male"];
+
+      console.log("voiceId", voiceId)
+      console.log("language", language)
+      console.log("gender", gender)
 
       // Start the conversation with your agent
       await conversation.startSession({
@@ -184,7 +188,6 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
                   <option value="en">English</option>
                   <option value="es">Spanish</option>
                   <option value="pt">Portuguese</option>
-                  <option value="fr">French</option>
                 </select>
               </div>
               {/* Gender selection UI */}
