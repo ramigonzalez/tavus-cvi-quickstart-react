@@ -6,13 +6,11 @@ export type VoiceSelectionStepProps = {
   totalSteps: number;
 };
 
-export const VoiceSelectionStep: React.FC<VoiceSelectionStepProps> = ({ stepIndex, totalSteps}) => (
-  <div className="min-h-screen flex flex-col items-center justify-center onboarding-bg">
-    <TakeABreathScreen
-      heading="Voice Selection"
-      subheading="Choose the voice that resonates with you most."
-      stepIndex={stepIndex}
-      totalSteps={totalSteps}
-    />
-  </div>
+export const VoiceSelectionStep: React.FC<VoiceSelectionStepProps> = ({ stepIndex, totalSteps }) => (
+  <TakeABreathScreen
+    heading="Voice Selection"
+    subheading="Choose the voice that resonates with you most."
+    stepIndex={stepIndex}
+    totalSteps={totalSteps}
+  />
 ); 

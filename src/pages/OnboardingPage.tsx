@@ -46,7 +46,7 @@ const steps = [
 type Step = "welcome" | "emotional_discovery" | "ritual_design" | "voice_selection" | "complete"
 
 export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
-  const [currentStep, setCurrentStep] = useState<Step>("voice_selection");
+  const [currentStep, setCurrentStep] = useState<Step>("complete");
   const [userName, setUserName] = useState("");
   const [language, setLanguage] = useState<Language>("en");
   const [gender, setGender] = useState<"male" | "female">("male");

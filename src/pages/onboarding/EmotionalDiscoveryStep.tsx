@@ -7,12 +7,10 @@ export type EmotionalDiscoveryStepProps = {
 };
 
 export const EmotionalDiscoveryStep: React.FC<EmotionalDiscoveryStepProps> = ({ stepIndex, totalSteps }) => (
-  <div className="min-h-screen flex flex-col items-center justify-center onboarding-bg">
-    <TakeABreathScreen
-      heading="Emotional Discovery"
-      subheading="Let's explore your emotional landscape and understand what drives you."
-      stepIndex={stepIndex}
-      totalSteps={totalSteps}
-    />
-  </div>
+  <TakeABreathScreen
+    heading="Emotional Discovery"
+    subheading="Let's explore your emotional landscape and understand what drives you."
+    stepIndex={stepIndex}
+    totalSteps={totalSteps}
+  />
 ); 
