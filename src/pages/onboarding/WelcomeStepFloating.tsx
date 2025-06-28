@@ -1,7 +1,6 @@
 import React from "react";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
-import { ProgressDots } from "@/components/ui/ProgressDots";
 
 export type WelcomeStepProps = {
   userName: string;
@@ -11,8 +10,6 @@ export type WelcomeStepProps = {
   gender: string;
   setGender: (v: string) => void;
   onNext: () => void;
-  stepIndex: number;
-  totalSteps: number;
 };
 
 export const WelcomeStepFloating: React.FC<WelcomeStepProps> = ({
@@ -23,13 +20,8 @@ export const WelcomeStepFloating: React.FC<WelcomeStepProps> = ({
   gender,
   setGender,
   onNext,
-  stepIndex,
-  totalSteps,
 }) => (
   <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br from-[#1a1047] via-[#2d176e] to-[#0e062a] font-sans p-8">
-    <div className="mt-12 mb-6">
-      <ProgressDots current={stepIndex} total={totalSteps} />
-    </div>
     <h1 className="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-[#F5EFE8] to-[#BA9BE6] bg-clip-text text-transparent text-center mb-4 drop-shadow-lg">
       Design your Conversational AI Agent
     </h1>

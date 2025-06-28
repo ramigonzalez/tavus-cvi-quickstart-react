@@ -1,15 +1,18 @@
 import React from "react";
-import { Card } from "@/components/ui/Card";
-import { ProgressDots } from "@/components/ui/ProgressDots";
-import { VoiceWaveform } from "@/components/ui/VoiceWaveform";
-import { Button } from "@/components/ui/Button";
 import { TakeABreathScreen } from "@/components/ui/TakeABreathScreen";
 
-export const EmotionalDiscoveryStep: React.FC = () => (
+export type EmotionalDiscoveryStepProps = {
+  stepIndex: number;
+  totalSteps: number;
+};
+
+export const EmotionalDiscoveryStep: React.FC<EmotionalDiscoveryStepProps> = ({ stepIndex, totalSteps }) => (
   <div className="min-h-screen flex flex-col items-center justify-center px-4 onboarding-bg">
     <TakeABreathScreen
       heading="Emotional Discovery"
       subheading="Let's explore your emotional landscape and understand what drives you."
+      stepIndex={stepIndex}
+      totalSteps={totalSteps}
     />
   </div>
 ); 

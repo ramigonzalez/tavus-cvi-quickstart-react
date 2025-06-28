@@ -1,15 +1,19 @@
-import React from "react";
+import { ProgressDots } from "./ProgressDots";
 
 export const TakeABreathScreen = ({
   heading,
   subheading,
   onContinue,
   buttonText,
+  stepIndex,
+  totalSteps,
 }: {
   heading: string;
   subheading: string;
   onContinue?: () => void;
   buttonText?: string;
+  stepIndex: number;
+  totalSteps: number;
 }) => (
   <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br from-[#1a1047] via-[#2d176e] to-[#0e062a] relative font-sans">
     <div className="absolute inset-0 pointer-events-none z-0" style={{
@@ -17,6 +21,9 @@ export const TakeABreathScreen = ({
       mixBlendMode: "overlay"
     }} />
     <div className="z-10 flex flex-col items-center w-full px-6">
+    <div className="mt-12 mb-6">
+      <ProgressDots current={stepIndex} total={totalSteps} />
+    </div>
       <h1 className="text-3xl md:text-4xl font-extrabold text-[#F5EFE8] text-center mt-12 mb-2 drop-shadow-lg">
         {heading}
       </h1>

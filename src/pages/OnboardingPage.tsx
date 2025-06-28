@@ -37,17 +37,16 @@ async function getSignedUrl(): Promise<string> {
 }
 
 const steps = [
-  "welcome",
   "emotional_discovery",
   "ritual_design",
   "voice_selection",
   "complete"
 ] as const;
 
-type Step = "welcome" | "emotional_discovery" | "ritual_design" | "voice_selection"
+type Step = "welcome" | "emotional_discovery" | "ritual_design" | "voice_selection" | "complete"
 
 export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
-  const [currentStep, setCurrentStep] = useState<Step>("welcome");
+  const [currentStep, setCurrentStep] = useState<Step>("emotional_discovery");
   const [userName, setUserName] = useState("");
   const [language, setLanguage] = useState<Language>("en");
   const [gender, setGender] = useState<"male" | "female">("male");
@@ -92,6 +91,7 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
       console.log("language", language)
       console.log("gender", gender)
 
+      setCurrentStep("emotional_discovery")
       // Start the conversation with your agent
       await conversation.startSession({
         overrides: { agent: { language }, tts: { voiceId } },
@@ -136,10 +136,7 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
             return 'Onboarding data saved successfully. Agent can now provide closing message before session ends.';
           },
           set_ui_step: ({ step }: { step: string }): string => {
-            // Allow agent to navigate the UI.
-            setCurrentStep(
-              step as "welcome" | "emotional_discovery" | "ritual_design" | "voice_selection"
-            );
+            setCurrentStep(step as Step);
             console.log("***** set_ui_step ****", step)
             return `Navigated to ${step}`;
           },
@@ -172,13 +169,22 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
         />
       )}
       {currentStep === "emotional_discovery" && (
-        <EmotionalDiscoveryStep />
+        <EmotionalDiscoveryStep 
+          stepIndex={stepIndex}
+          totalSteps={totalSteps}
+        />
       )}
       {currentStep === "ritual_design" && (
-        <RitualDesignStep />
+        <RitualDesignStep 
+          stepIndex={stepIndex}
+          totalSteps={totalSteps}
+        />
       )}
       {currentStep === "voice_selection" && (
-        <VoiceSelectionStep />
+        <VoiceSelectionStep 
+          stepIndex={stepIndex}
+          totalSteps={totalSteps}
+        />
       )}
       {currentStep === "complete" as Step && (
         <CompleteStep
