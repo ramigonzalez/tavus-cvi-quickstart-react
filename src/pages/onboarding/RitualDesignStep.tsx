@@ -6,9 +6,8 @@ export type RitualDesignStepProps = {
   totalSteps: number;
 };
 
-
 export const RitualDesignStep: React.FC<RitualDesignStepProps> = ({ stepIndex, totalSteps }) => (
-  <div className="min-h-screen flex flex-col items-center justify-center px-4 onboarding-bg">
+  <div className="min-h-screen flex flex-col items-center justify-center onboarding-bg">
     <TakeABreathScreen
       heading="Ritual Design"
       subheading="Let's design your perfect daily ritual together."

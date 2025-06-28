@@ -27,16 +27,29 @@ export const TakeABreathScreen = ({
         {subheading}
       </p>
       <div className="my-10 flex items-center justify-center">
-        <div className="w-48 h-48 rounded-full bg-gradient-to-br from-[#846fda] via-[#6556b9] to-[#ba9be6] shadow-2xl animate-breath-glow flex items-center justify-center" />
+        <div className="w-48 h-48 rounded-full bg-gradient-to-br from-[#846fda] via-[#6556b9] to-[#ba9be6] shadow-2xl animate-breath-glow-advanced flex items-center justify-center" />
       </div>
     </div>
     <style>{`
-      @keyframes breath-glow {
-        0%, 100% { box-shadow: 0 0 60px 10px #846fda55, 0 0 0 0 #6556b955; }
-        50% { box-shadow: 0 0 100px 30px #ba9be655, 0 0 0 0 #6556b955; }
+      @keyframes breath-glow-advanced {
+        0%, 100% {
+          box-shadow: 0 0 60px 10px #846fda55, 0 0 0 0 #6556b955;
+          transform: scale(1);
+          background: linear-gradient(135deg, #846fda 0%, #ba9be6 100%);
+        }
+        30% {
+          box-shadow: 0 0 120px 40px #ba9be688, 0 0 0 0 #6556b955;
+          transform: scale(1.12);
+          background: linear-gradient(135deg, #ba9be6 0%, #846fda 100%);
+        }
+        60% {
+          box-shadow: 0 0 180px 60px #846fda88, 0 0 0 0 #6556b955;
+          transform: scale(1.06);
+          background: linear-gradient(135deg, #846fda 0%, #ba9be6 100%);
+        }
       }
-      .animate-breath-glow {
-        animation: breath-glow 3s ease-in-out infinite;
+      .animate-breath-glow-advanced {
+        animation: breath-glow-advanced 3s ease-in-out infinite;
       }
     `}</style>
   </div>

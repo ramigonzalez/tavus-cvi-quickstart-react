@@ -7,7 +7,7 @@ export type VoiceSelectionStepProps = {
 };
 
 export const VoiceSelectionStep: React.FC<VoiceSelectionStepProps> = ({ stepIndex, totalSteps}) => (
-  <div className="min-h-screen flex flex-col items-center justify-center px-4 onboarding-bg">
+  <div className="min-h-screen flex flex-col items-center justify-center onboarding-bg">
     <TakeABreathScreen
       heading="Voice Selection"
       subheading="Choose the voice that resonates with you most."
