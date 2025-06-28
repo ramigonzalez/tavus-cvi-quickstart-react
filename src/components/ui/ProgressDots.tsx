@@ -1,5 +1,3 @@
-import React from "react";
-
 export const ProgressDots = ({ current, total }: { current: number; total: number }) => (
   <div className="flex items-center justify-center gap-4 mb-10">
     {Array.from({ length: total }).map((_, i) => (

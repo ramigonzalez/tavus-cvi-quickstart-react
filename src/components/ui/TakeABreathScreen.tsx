@@ -3,15 +3,11 @@ import { ProgressDots } from "./ProgressDots";
 export const TakeABreathScreen = ({
   heading,
   subheading,
-  onContinue,
-  buttonText,
   stepIndex,
   totalSteps,
 }: {
   heading: string;
   subheading: string;
-  onContinue?: () => void;
-  buttonText?: string;
   stepIndex: number;
   totalSteps: number;
 }) => (
@@ -33,14 +29,6 @@ export const TakeABreathScreen = ({
       <div className="my-10 flex items-center justify-center">
         <div className="w-48 h-48 rounded-full bg-gradient-to-br from-[#846fda] via-[#6556b9] to-[#ba9be6] shadow-2xl animate-breath-glow flex items-center justify-center" />
       </div>
-      {onContinue && buttonText && (
-        <button
-          className="mt-10 w-full max-w-xs py-4 rounded-full bg-gradient-to-r from-[#846fda] to-[#6556b9] text-white text-lg font-bold shadow-lg transition-transform duration-150 active:scale-105"
-          onClick={onContinue}
-        >
-          {buttonText}
-        </button>
-      )}
     </div>
     <style>{`
       @keyframes breath-glow {
