@@ -7,11 +7,12 @@ Refactor the onboarding experience to fully align with the Arami Design System a
 
 ### Goals
 - Achieve full visual and interaction alignment with the Arami Design System (gradient background, card container, indigo glow, rounded corners, gradient headings, Arami progress dots, etc.).
+- All onboarding steps (including Welcome and Complete) now use deep gradients, glowing cards, bold gradient headings, and mobile-first spacing per Arami spec.
 - Optimize all onboarding steps for iPhone/mobile use (touch, spacing, font, responsiveness).
 - Modularize onboarding into clear, animated, card-based steps.
 - Enhance accessibility and feedback (motion, error states, voice/animation cues).
 - Build a reusable component library (Button, Input, Card, Badge, Progress, VoiceWaveform, Avatar).
-- Make 'Emotional Discovery', 'Ritual Design', and 'Voice Selection' steps voice-only (no buttons, only listening state). Only Welcome and Complete steps have manual buttons.
+- Make 'Emotional Discovery', 'Ritual Design', and 'Voice Selection' steps fully voice-only (no buttons, only listening state, using TakeABreathScreen). Only Welcome and Complete steps have manual buttons.
 
 ### Functional Requirements
 1. **Visual Design**
@@ -19,11 +20,12 @@ Refactor the onboarding experience to fully align with the Arami Design System a
    - Card-based layout with rounded corners, indigo glow, and mobile padding.
    - Animated transitions between steps.
    - Progress dots styled per Arami tokens.
+   - All steps now visually match the Arami Design System from start to finish.
 2. **Onboarding Flow**
    - Welcome: Name, language, gender selection (manual button to start).
-   - Emotional Discovery: Voice-driven, animated listening state (no buttons).
-   - Ritual Design: Voice-driven, animated listening state (no buttons).
-   - Voice Selection: Voice-driven, animated listening state (no buttons).
+   - Emotional Discovery: Voice-driven, animated listening state (no buttons, TakeABreathScreen).
+   - Ritual Design: Voice-driven, animated listening state (no buttons, TakeABreathScreen).
+   - Voice Selection: Voice-driven, animated listening state (no buttons, TakeABreathScreen).
    - Complete: Summary, celebration animation (manual button to continue).
 3. **Component Library**
    - Button (primary, secondary, ghost; animated)
@@ -33,6 +35,7 @@ Refactor the onboarding experience to fully align with the Arami Design System a
    - Progress Indicator (dots/bar)
    - VoiceWaveform (animated)
    - Avatar (animated pulse/glow)
+   - TakeABreathScreen (glowing, animated listening state)
 4. **Accessibility & Mobile**
    - Touch targets ≥44x44px
    - High contrast, readable fonts
@@ -41,7 +44,7 @@ Refactor the onboarding experience to fully align with the Arami Design System a
 5. **Motion & Feedback**
    - Button scale on tap/hover
    - Card fade/slide transitions
-   - Listening: animated waveform/mic
+   - Listening: animated glowing state (TakeABreathScreen)
    - End: confetti/glow burst
 
 ### Non-Functional Requirements
@@ -55,3 +58,4 @@ Refactor the onboarding experience to fully align with the Arami Design System a
 - All steps accessible and touch-friendly
 - Only Welcome and Complete steps have manual buttons; all others are voice-only
 - Reusable component library established 
+- Onboarding flow is visually delightful and on-brand from start to finish 

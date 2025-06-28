@@ -15,14 +15,16 @@
 - [x] Apply 16/24/32px spacing throughout
 - [x] Add fade-in transitions for cards/steps
 - [x] All onboarding steps now visually match the Arami Design System (gradient, card, heading, spacing, fade-in, etc.)
+- [x] Welcome and Complete steps now use deep gradient backgrounds, glowing cards, and bold gradient headings per Arami spec.
 
-## Phase 2: Voice-Only Step Refactor (In Progress)
-- [ ] Remove Back/Next buttons from Emotional Discovery, Ritual Design, and Voice Selection steps
-- [ ] Show only animated listening state (waveform, indicator) on these steps
-- [ ] Ensure navigation between these steps is handled by voice/programmatically
-- [ ] Only Welcome and Complete steps have manual buttons
+## Phase 2: Voice-Only Step Refactor (Complete)
+- [x] Remove Back/Next buttons from Emotional Discovery, Ritual Design, and Voice Selection steps
+- [x] Show only animated listening state (TakeABreathScreen) on these steps
+- [x] Ensure navigation between these steps is handled by voice/programmatically
+- [x] Only Welcome and Complete steps have manual buttons
+- [x] All three voice-driven steps are now fully voice-only and visually on-brand
 
-## Phase 3: Accessibility & Mobile Polish (Complete)
+## Phase 3: Accessibility & Mobile Polish (In Progress)
 - [ ] Ensure all touch targets are ≥44x44px
 - [ ] Ensure all labels are associated with inputs and selects
 - [ ] Add ARIA attributes where needed for screen readers

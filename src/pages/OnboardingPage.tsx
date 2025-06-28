@@ -47,7 +47,7 @@ const steps = [
 type Step = "welcome" | "emotional_discovery" | "ritual_design" | "voice_selection"
 
 export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
-  const [currentStep, setCurrentStep] = useState<Step>("complete");
+  const [currentStep, setCurrentStep] = useState<Step>("welcome");
   const [userName, setUserName] = useState("");
   const [language, setLanguage] = useState<Language>("en");
   const [gender, setGender] = useState<"male" | "female">("male");
@@ -157,7 +157,7 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
   const totalSteps = steps.length;
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center p-4 onboarding-bg">
+    <main className="min-h-screen flex flex-col items-center justify-center onboarding-bg">
       {currentStep === "welcome" && (
         <WelcomeStep
           userName={userName}
