@@ -44,10 +44,10 @@ const steps = [
   "complete"
 ] as const;
 
-type Step = typeof steps[number];
+type Step = "welcome" | "emotional_discovery" | "ritual_design" | "voice_selection"
 
 export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
-  const [currentStep, setCurrentStep] = useState<Step>("welcome");
+  const [currentStep, setCurrentStep] = useState<Step>("complete");
   const [userName, setUserName] = useState("");
   const [language, setLanguage] = useState<Language>("en");
   const [gender, setGender] = useState<"male" | "female">("male");
@@ -131,7 +131,7 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
             return "Primary Goals Set Done";
           },
           complete_onboarding: async (): Promise<string> => {
-            setCurrentStep('complete')
+            setCurrentStep('complete' as Step)
             console.log("*** complete_onboarding ***")
             return 'Onboarding data saved successfully. Agent can now provide closing message before session ends.';
           },
@@ -151,11 +151,10 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
     }
   }, [conversation, userName, language, gender]);
 
+
   // Step navigation helpers
   const stepIndex = steps.indexOf(currentStep);
   const totalSteps = steps.length;
-  const goToNext = () => setCurrentStep(steps[Math.min(stepIndex + 1, totalSteps - 1)]);
-  const goToPrev = () => setCurrentStep(steps[Math.max(stepIndex - 1, 0)]);
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center p-4 onboarding-bg">
@@ -167,42 +166,21 @@ export const OnboardingPage = ({ onBack }: { onBack: () => void }) => {
           setLanguage={(v: string) => setLanguage(v as Language)}
           gender={gender}
           setGender={(v: string) => setGender(v as "male" | "female")}
-          onNext={() => {
-            startConversation();
-            goToNext();
-          }}
+          onNext={() => startConversation()}
           stepIndex={stepIndex}
           totalSteps={totalSteps}
         />
       )}
       {currentStep === "emotional_discovery" && (
-        <EmotionalDiscoveryStep
-          onNext={goToNext}
-          onBack={goToPrev}
-          stepIndex={stepIndex}
-          totalSteps={totalSteps}
-          listening={conversation.status === "connected"}
-        />
+        <EmotionalDiscoveryStep />
       )}
       {currentStep === "ritual_design" && (
-        <RitualDesignStep
-          onNext={goToNext}
-          onBack={goToPrev}
-          stepIndex={stepIndex}
-          totalSteps={totalSteps}
-          listening={conversation.status === "connected"}
-        />
+        <RitualDesignStep />
       )}
       {currentStep === "voice_selection" && (
-        <VoiceSelectionStep
-          onNext={goToNext}
-          onBack={goToPrev}
-          stepIndex={stepIndex}
-          totalSteps={totalSteps}
-          listening={conversation.status === "connected"}
-        />
+        <VoiceSelectionStep />
       )}
-      {currentStep === "complete" && (
+      {currentStep === "complete" as Step && (
         <CompleteStep
           knowledgeCategories={knowledgeCategories}
           primaryGoals={primaryGoals}
